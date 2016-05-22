@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,8 +91,11 @@ public class Main extends Activity {
         @Override
         protected void onPostExecute(String s) {
             String err=null;
+
             try {
+
                 JSONObject root = new JSONObject(s);
+                //Получаем JSON объект
                 JSONObject user_data = root.getJSONObject("users");
                 NAME = user_data.getString("Name");
                 PASSWORD = user_data.getString("Password");

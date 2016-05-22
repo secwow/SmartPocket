@@ -59,15 +59,20 @@ public class Register extends Activity {
                 //Создаём HTTP подключение
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();// Открываем подлкючение по указанному адресу
                 httpURLConnection.setDoOutput(true);// Получаем разрешение для отправки POST запросов
+                // Создаём поток
                 OutputStream os = httpURLConnection.getOutputStream();
+                //Записываем в поток структуру POST-запроса
                 os.write(urlParams.getBytes());
                 os.flush();
                 os.close();
+                // Возвращаем всё что мы записали в поток
                 InputStream is = httpURLConnection.getInputStream();
                 while((tmp=is.read())!=-1){
                     data+= (char)tmp;
                 }
+
                 is.close();
+
                 httpURLConnection.disconnect();
 
                 return data;
@@ -84,9 +89,10 @@ public class Register extends Activity {
         @Override
         protected void onPostExecute(String s) {
             if(s.equals("")){
-                s="Data saved successfully.";
+                s="Registration is succecful";
+                Toast.makeText(ctx, s, Toast.LENGTH_LONG).show();
             }
-            Toast.makeText(ctx, s, Toast.LENGTH_LONG).show();
+
         }
     }
 
