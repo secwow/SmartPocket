@@ -1,14 +1,21 @@
 package com.example.user.smartpocket;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -21,14 +28,38 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class Billing extends Activity implements CompoundButton.OnCheckedChangeListener{
     private TextView switchStatus;
     private Switch mySwitch;
 
+    private String Name,Comment,Date,Spinner, Type,Category,Sum;
+
+    Switch aSwitch;
+    Spinner aSpinner;
+    EditText aSum, aComment, aDate;
 
 
+
+
+
+
+    BackGround b = new BackGround();
+    public void SearchElementsActivity()
+    {
+
+
+        Sum = aSum.getText().toString();
+        Comment = aComment.getText().toString();
+
+        Category = aSpinner.getSelectedItem().toString();
+        Type = aSwitch.getTextOff().toString();
+
+    }
     public void Expenditure()
     {
         String[] objects = {"Интернет", "Канцелярия"};
@@ -75,20 +106,97 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
             }
         });
     }
+    public void AddOper(View v) {
+        SearchElementsActivity();
+        b.execute(Name, Sum, Date, Type, Category);
+    }
+
+
+
+    Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+
+    };
+
+
+
+    private void updateLabel() {
+
+        String myFormat = "MM-dd-yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        aDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+
+
+
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billing);
 
 
+
+
         Expenditure();
+
+
+
+
+
         mySwitch = (Switch) findViewById(R.id.type);
+
         if (mySwitch  != null) {
             mySwitch.setOnCheckedChangeListener(this);
         }
 
+        aSum= (EditText) findViewById(R.id.sum);
+        aComment = (EditText) findViewById(R.id.comment);
+        aDate = (EditText) findViewById(R.id.date);
+        aSwitch = (Switch) findViewById(R.id.type);
+        aSpinner = (Spinner)findViewById(R.id.spinner);
+
+
+
+        Name = getIntent().getStringExtra("Name");
+
+        aDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(Billing.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
     }
+
+
+
+
+
+
 
 
     class BackGround extends AsyncTask<String, String, String> {
@@ -96,8 +204,11 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
         @Override
         protected String doInBackground(String... params) {
             String name = params[0];
-            String password = params[1];
-            String email = params[2];
+            String summary = params[1];
+            String date = params[2];
+            String type = params[3];
+            String category = params[4];
+
             String data = "";
             int tmp;
 
@@ -105,7 +216,9 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
                 //URL к которому подключаемся
                 URL url = new URL("http://flyingsnow.ru.xsph.ru/add.php");
                 //POST-параметры которые мы передаём
-                String urlParams = "Name=" + name + "&Password=" + password + "&Email=" + email;
+                String urlParams = "Name=" + name + "&Sum=" + summary + "&Date=" + date+ "&Type=" + type + "&Category=" + category;
+
+                /*
                 //Создаём HTTP подключение
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();// Открываем подлкючение по указанному адресу
                 httpURLConnection.setDoOutput(true);// Получаем разрешение для отправки POST запросов
@@ -124,7 +237,7 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
                 is.close();
 
                 httpURLConnection.disconnect();
-
+                */
                 return data;
 
             } catch (MalformedURLException e) {
@@ -139,8 +252,8 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
         @Override
         protected void onPostExecute(String s) {
             if (s.equals("")) {
-                s = "Registration is succecful";
-               
+                s = "Платёж успешно добавлен";
+
             }
 
         }
@@ -154,10 +267,13 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
     {
         if(status)
         {
+
             Income();
+            Spinner = "Доход";
         }
         else
         {
+            Spinner = "Расход";
             Expenditure();
         }
 

@@ -13,7 +13,14 @@ public class Home extends Activity {
     String name, password, email, Err;
     TextView nameTV, emailTV, passwordTV, err;
     public void Billing(View v){
-        startActivity(new Intent(this,Billing.class));
+
+
+                Intent intent = new Intent(this, Billing.class);
+        intent.putExtra("Name", name.toString());
+
+        startActivity(intent);
+
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

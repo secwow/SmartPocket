@@ -21,7 +21,7 @@ android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
         android:inputType="date"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/sum"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_column="2"/>
@@ -48,10 +48,10 @@ android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
         android:inputType="date"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/date"
         android:layout_below="@+id/type"
-        android:layout_alignStart="@+id/editText"
-        android:layout_column="2"/>
+        android:layout_alignStart="@+id/sum"
+        android:layout_column="2" />
 
 
     </TableRow>
@@ -73,9 +73,9 @@ android:layout_alignParentTop="true"
             android:textOff="Расход"
             android:textOn="Доход"
             android:enabled="true"
-            android:layout_below="@+id/editText"
+            android:layout_below="@+id/sum"
             android:layout_column="2"
-            android:layout_alignStart="@+id/editText2"
+            android:layout_alignStart="@+id/date"
             android:layout_marginStart="70dp" />
 
 
@@ -97,10 +97,10 @@ android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
         android:spinnerMode="dropdown"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/date"
         android:layout_alignParentEnd="true"
         android:layout_column="2"
-        android:layout_alignStart="@+id/editText2" />
+        android:layout_alignStart="@+id/date" />
 
 
 
@@ -108,6 +108,7 @@ android:layout_alignParentTop="true"
 
 
     <TableRow>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,10 +121,22 @@ android:layout_alignParentTop="true"
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText3"
+            android:id="@+id/comment"
             android:layout_column="2" />
     </TableRow>
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Отправить"
+            android:id="@+id/addOperationButton"
+            android:layout_column="2"
+            android:onClick="AddOper" />
+    </TableRow>
 
 
 </TableLayout>
