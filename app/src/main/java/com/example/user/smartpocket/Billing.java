@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,11 +54,14 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
     {
 
 
+        String test="";
         Sum = aSum.getText().toString();
         Comment = aComment.getText().toString();
-
+        Date = aDate.getText().toString();
         Category = aSpinner.getSelectedItem().toString();
         Type = aSwitch.getTextOff().toString();
+
+
 
     }
     public void Expenditure()
@@ -108,7 +112,7 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
     }
     public void AddOper(View v) {
         SearchElementsActivity();
-        b.execute(Name, Sum, Date, Type, Category);
+        b.execute(Name, Sum, Date, Type, Category, Comment);
     }
 
 
@@ -133,7 +137,7 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
 
     private void updateLabel() {
 
-        String myFormat = "MM-dd-yy"; //In which you need put here
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         aDate.setText(sdf.format(myCalendar.getTime()));
@@ -208,7 +212,7 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
             String date = params[2];
             String type = params[3];
             String category = params[4];
-
+            String comment = params[5];
             String data = "";
             int tmp;
 
@@ -216,9 +220,9 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
                 //URL к которому подключаемся
                 URL url = new URL("http://flyingsnow.ru.xsph.ru/add.php");
                 //POST-параметры которые мы передаём
-                String urlParams = "Name=" + name + "&Sum=" + summary + "&Date=" + date+ "&Type=" + type + "&Category=" + category;
+                String urlParams = "Name=" + name + "&Sum=" + summary + "&Date=" + date+ "&Type=" + type + "&Category=" + category+"&Comment=" + comment;
 
-                /*
+                Log.d("msg",urlParams);
                 //Создаём HTTP подключение
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();// Открываем подлкючение по указанному адресу
                 httpURLConnection.setDoOutput(true);// Получаем разрешение для отправки POST запросов
@@ -237,7 +241,7 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
                 is.close();
 
                 httpURLConnection.disconnect();
-                */
+
                 return data;
 
             } catch (MalformedURLException e) {
@@ -253,7 +257,11 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
         protected void onPostExecute(String s) {
             if (s.equals("")) {
                 s = "Платёж успешно добавлен";
-
+                Log.d("Succes",s);
+            }
+            else
+            {
+                Log.d("Error",s);
             }
 
         }
@@ -269,11 +277,11 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
         {
 
             Income();
-            Spinner = "Доход";
+            Type = "Доход";
         }
         else
         {
-            Spinner = "Расход";
+            Type = "Расход";
             Expenditure();
         }
 
