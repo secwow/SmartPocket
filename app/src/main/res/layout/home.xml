@@ -31,7 +31,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                     style="@style/AppTheme"
-                    android:layout_column="0" />
+                    android:layout_column="0"
+                    android:textColor="#e4e46f" />
             </TableRow>
 
             <TableRow>
