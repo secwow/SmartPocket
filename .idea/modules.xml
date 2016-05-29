@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SmartPocket.iml" filepath="$PROJECT_DIR$/SmartPocket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SmartPocket-master.iml" filepath="$PROJECT_DIR$/SmartPocket-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

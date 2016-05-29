@@ -25,12 +25,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Your SmartPocket is ON!"
+                android:text="Добро пожаловать!"
                 android:id="@+id/textView"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                    style="@style/AppTheme"
+
                     android:layout_column="0"
                     android:textColor="#e4e46f" />
             </TableRow>
@@ -50,21 +50,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Medium Text"
-                    android:id="@+id/home_email"
-                    android:layout_below="@+id/home_name"
+                    android:id="@+id/home_password"
+                    android:text="Ваша почта:"
+                    android:layout_below="@+id/home_email"
                     android:layout_alignParentStart="true" />
+
             </TableRow>
             <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
-                    android:id="@+id/home_password"
-                    android:layout_below="@+id/home_email"
+                    android:id="@+id/home_email"
+                    android:layout_below="@+id/home_name"
                     android:layout_alignParentStart="true" />
-
             </TableRow>
 
             <TableRow
@@ -113,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="Выход"
+                    android:text="    Выход     "
                     android:textColor="#4e4b4b"
                     android:textSize="20sp"
                     android:background="@drawable/buttonshape"

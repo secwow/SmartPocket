@@ -70,9 +70,9 @@ public class Home extends Activity {
         email = getIntent().getStringExtra("Email");
         Err = getIntent().getStringExtra("err");
 
-        nameTV.setText("Welcome "+name);
-        passwordTV.setText("Your password is "+password);
-        emailTV.setText("Your email is "+email);
+        nameTV.setText("Здравствуйте, "+name);
+
+        emailTV.setText(email);
         err.setText(Err);
         b.execute(name);
         btnOk = (Button) findViewById(R.id.button);
@@ -159,19 +159,23 @@ public class Home extends Activity {
                     TableLayout stk = (TableLayout) findViewById(R.id.table);
                     TableRow tbrow0 = new TableRow(getApplicationContext());
                     TextView tv0 = new TextView(getApplicationContext());
-                    tv0.setText("Type ");
+                    tv0.setText("Тип ");
+                    tv0.setTextColor(Color.YELLOW);
                     tv0.setTextSize(20);
                     tbrow0.addView(tv0);
                     TextView tv1 = new TextView(getApplicationContext());
-                    tv1.setText("Sum");
+                    tv1.setText("Сумма");
+                    tv1.setTextColor(Color.YELLOW);
                     tv1.setTextSize(20);
                     tbrow0.addView(tv1);
                     TextView tv2 = new TextView(getApplicationContext());
-                    tv2.setText(" Category ");
+                    tv2.setText(" Категория ");
+                    tv2.setTextColor(Color.YELLOW);
                     tv2.setTextSize(20);
                     tbrow0.addView(tv2);
                     TextView tv3 = new TextView(getApplicationContext());
-                    tv3.setText(" Commentary ");
+                    tv3.setText(" Коммент ");
+                    tv3.setTextColor(Color.YELLOW);
                     tv3.setTextSize(20);
                     tbrow0.addView(tv3);
                     stk.addView(tbrow0);
@@ -208,19 +212,20 @@ public class Home extends Activity {
 
                         TextView t2v = new TextView(getApplicationContext());
                         t2v.setText(summa);
+                        t2v.setTextColor(Color.BLACK);
 
                         t2v.setGravity(Gravity.CENTER);
                         tbrow.addView(t2v);
 
                         TextView t3v = new TextView(getApplicationContext());
                         t3v.setText(category);
-
+                        t3v.setTextColor(Color.BLACK);
                         t3v.setGravity(Gravity.CENTER);
                         tbrow.addView(t3v);
 
                         TextView t4v = new TextView(getApplicationContext());
                         t4v.setText(comment);
-
+                        t4v.setTextColor(Color.BLACK);
                         t4v.setGravity(Gravity.CENTER);
                         tbrow.addView(t4v);
                         stk.addView(tbrow);
