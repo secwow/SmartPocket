@@ -17,6 +17,7 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +29,8 @@ import java.net.URL;
 public class Home extends Activity {
     Button btnOk;
     String name, password, email, Err;
-    TextView nameTV, emailTV, passwordTV, err;
+    TextView nameTV, emailTV, passwordTV, err, currentBalance;
+    int currentBal=0;
     String login,id,summa,date,type,category,comment;
     BackGround b = new BackGround();
     public void Billing(View v){
@@ -61,6 +63,7 @@ public class Home extends Activity {
         emailTV = (TextView) findViewById(R.id.home_email);
         passwordTV = (TextView) findViewById(R.id.home_password);
         err = (TextView) findViewById(R.id.err);
+        currentBalance = (TextView)findViewById(R.id.currentBalance);
 
         name = getIntent().getStringExtra("Name");
         password = getIntent().getStringExtra("Password");
@@ -188,6 +191,7 @@ public class Home extends Activity {
                             t1v.setGravity(Gravity.CENTER);
                             t1v.setTextSize(20);
                             tbrow.addView(t1v);
+                            currentBal-=Integer.valueOf(summa).intValue();
                         }
                         if (type.equals("Доход")) {
                             t1v.setText("+");
@@ -195,6 +199,7 @@ public class Home extends Activity {
                             t1v.setGravity(Gravity.CENTER);
                             t1v.setTextSize(20);
                             tbrow.addView(t1v);
+                            currentBal+=Integer.valueOf(summa).intValue();
                         }
 
                         TextView t2v = new TextView(getApplicationContext());
@@ -215,6 +220,7 @@ public class Home extends Activity {
                         t4v.setGravity(Gravity.CENTER);
                         tbrow.addView(t4v);
                         stk.addView(tbrow);
+                        currentBalance.setText("Текущий баланс: " + currentBal);
                     }
 
 
