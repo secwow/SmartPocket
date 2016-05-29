@@ -16,8 +16,11 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
             android:id="@+id/tableLayout">
-            <TableRow android:layout_width="fill_parent"><TextView
-                android:layout_width="fill_parent"
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Your SmartPocket is ON!"
@@ -25,8 +28,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_span="2"
-                style="@style/AppTheme" />
+                    style="@style/AppTheme"
+                    android:layout_column="0" />
             </TableRow>
 
             <TableRow>
@@ -58,8 +61,13 @@
                     android:id="@+id/home_password"
                     android:layout_below="@+id/home_email"
                     android:layout_alignParentStart="true" />
+
             </TableRow>
-            <TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,32 +75,68 @@
                     android:text="Error Message"
                     android:id="@+id/err"
                     android:layout_below="@+id/button"
-                    android:layout_alignEnd="@+id/button" />
+                    android:layout_alignEnd="@+id/button"
+                    android:layout_column="0" />
             </TableRow>
-            <TableRow android:layout_width="fill_parent">
+
+            <TableRow>
+
                 <Button
+                    android:id="@+id/button"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:text="Добавить платёж"
-                    android:id="@+id/button"
+
+                    android:textColor="#4e4b4b"
+                    android:textSize="20sp"
+                    android:background="@drawable/buttonshape"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"
+
                     android:layout_below="@+id/home_password"
                     android:layout_alignEnd="@+id/home_password"
-                    android:onClick="Billing" /><![CDATA[
 
-> 
-
-]]>
+                    android:onClick="Billing"
+                    android:layout_column="0" />
 
                 <Button
+                    android:id="@+id/button3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:text="Выход"
-                    android:id="@+id/button3"
+                    android:textColor="#4e4b4b"
+                    android:textSize="20sp"
+                    android:background="@drawable/buttonshape"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"
+
+
                     android:layout_alignTop="@+id/button2"
                     android:layout_toEndOf="@+id/button2"
+
                     android:nestedScrollingEnabled="false"
-                    android:onClick="exit" />
+                    android:onClick="exit"
+                    android:layout_column="4" />
             </TableRow>
+            <TableRow android:layout_width="fill_parent"><![CDATA[
+
+
+>
+
+
+
+
+
+
+
+                ]]></TableRow>
             <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
