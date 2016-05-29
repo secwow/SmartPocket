@@ -3,6 +3,7 @@ package com.example.user.smartpocket;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -32,34 +33,30 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Billing extends Activity implements CompoundButton.OnCheckedChangeListener{
-    private TextView switchStatus;
+    private TextView switchStatus, errorMessage;
     private Switch mySwitch;
 
-    private String Name,Comment,Date,Spinner, Type,Category,Sum;
+    private String Name,Comment,Date,Spinner, Type,Category,Sum, password, email;
 
     Switch aSwitch;
     Spinner aSpinner;
     EditText aSum, aComment, aDate;
-
-
-
-
-
 
     BackGround b = new BackGround();
     public void SearchElementsActivity()
     {
 
 
-        String test="";
-        Sum = aSum.getText().toString();
+        checkSum(aSum.getText().toString());
         Comment = aComment.getText().toString();
         Date = aDate.getText().toString();
         Category = aSpinner.getSelectedItem().toString();
-        Type = aSwitch.getTextOff().toString();
+
 
 
 
@@ -110,12 +107,34 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
             }
         });
     }
-    public void AddOper(View v) {
-        SearchElementsActivity();
-        b.execute(Name, Sum, Date, Type, Category, Comment);
+
+
+    public void checkSum(String userSum)
+    {
+      if(userSum!=null && !userSum.isEmpty())
+      {
+          Name = userSum;
+          aSum.setBackgroundResource(R.drawable.succesedittextbox);
+
+      }
+        else
+      {
+          errorMessage.setText("Сумма не может быть пустой");
+          aSum.setBackgroundResource(R.drawable.erroredittextbox);
+      }
     }
 
+    // Берём данные из элементов активити и добавляем их в поток.
+    public void AddOper(View v) {
+        SearchElementsActivity();
 
+        if(!Sum.isEmpty() && !Date.isEmpty())
+        {
+            b.execute(Name, Sum, Date, Type, Category, Comment);
+        }
+
+
+    }
 
     Calendar myCalendar = Calendar.getInstance();
 
@@ -133,23 +152,12 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
 
     };
 
-
-
     private void updateLabel() {
 
         String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
         aDate.setText(sdf.format(myCalendar.getTime()));
     }
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -157,31 +165,29 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billing);
 
-
-
-
+        // Установка значений по умолчанию.
         Expenditure();
 
-
-
-
-
         mySwitch = (Switch) findViewById(R.id.type);
-
+        // Добавляем событие SWITCH, что бы менял Spinner
         if (mySwitch  != null) {
             mySwitch.setOnCheckedChangeListener(this);
         }
 
+        // Получаем элементы с layout
         aSum= (EditText) findViewById(R.id.sum);
         aComment = (EditText) findViewById(R.id.comment);
         aDate = (EditText) findViewById(R.id.date);
         aSwitch = (Switch) findViewById(R.id.type);
         aSpinner = (Spinner)findViewById(R.id.spinner);
+        errorMessage = (TextView)findViewById(R.id.Message);
+        Type = "Расход";
 
-
-
+        // Получаем логин с предыдущей страницы
         Name = getIntent().getStringExtra("Name");
-
+        password = getIntent().getStringExtra("Password");
+        email = getIntent().getStringExtra("Email");
+        //Добавляем полю aDate событие при клике (открытие календаря)
         aDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -196,61 +202,57 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
 
     }
 
-
-
-
-
-
-
-
     class BackGround extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            String name = params[0];
-            String summary = params[1];
-            String date = params[2];
-            String type = params[3];
-            String category = params[4];
-            String comment = params[5];
-            String data = "";
-            int tmp;
 
-            try {
-                //URL к которому подключаемся
-                URL url = new URL("http://flyingsnow.ru.xsph.ru/add.php");
-                //POST-параметры которые мы передаём
-                String urlParams = "Name=" + name + "&Sum=" + summary + "&Date=" + date+ "&Type=" + type + "&Category=" + category+"&Comment=" + comment;
 
-                Log.d("msg",urlParams);
-                //Создаём HTTP подключение
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();// Открываем подлкючение по указанному адресу
-                httpURLConnection.setDoOutput(true);// Получаем разрешение для отправки POST запросов
-                // Создаём поток
-                OutputStream os = httpURLConnection.getOutputStream();
-                //Записываем в поток структуру POST-запроса
-                os.write(urlParams.getBytes());
-                os.flush();
-                os.close();
-                // Возвращаем всё что мы записали в поток
-                InputStream is = httpURLConnection.getInputStream();
-                while ((tmp = is.read()) != -1) {
-                    data += (char) tmp;
+
+                String name = params[0];
+                String summary = params[1];
+                String date = params[2];
+                String type = params[3];
+                String category = params[4];
+                String comment = params[5];
+                String data = "";
+                int tmp;
+
+                try {
+                    //URL к которому подключаемся
+                    URL url = new URL("http://flyingsnow.ru.xsph.ru/add.php");
+                    //POST-параметры которые мы передаём
+                    String urlParams = "Name=" + name + "&Sum=" + summary + "&Date=" + date+ "&Type=" + type + "&Category=" + category+"&Comment=" + comment;
+
+                    Log.d("msg",urlParams);
+                    //Создаём HTTP подключение
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();// Открываем подлкючение по указанному адресу
+                    httpURLConnection.setDoOutput(true);// Получаем разрешение для отправки POST запросов
+                    // Создаём поток
+                    OutputStream os = httpURLConnection.getOutputStream();
+                    //Записываем в поток структуру POST-запроса
+                    os.write(urlParams.getBytes());
+                    os.flush();
+                    os.close();
+                    // Возвращаем всё что мы записали в поток
+                    InputStream is = httpURLConnection.getInputStream();
+                    while ((tmp = is.read()) != -1) {
+                        data += (char) tmp;
+                    }
+
+                    is.close();
+
+                    httpURLConnection.disconnect();
+
+                    return data;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    return "Exception: " + e.getMessage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "Exception: " + e.getMessage();
                 }
-
-                is.close();
-
-                httpURLConnection.disconnect();
-
-                return data;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "Exception: " + e.getMessage();
-            }
         }
 
         @Override
@@ -258,10 +260,17 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
             if (s.equals("")) {
                 s = "Платёж успешно добавлен";
                 Log.d("Succes",s);
+                Intent intent = new Intent(Billing.this, Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("Name", Name);
+                intent.putExtra("Password", password);
+                intent.putExtra("Email", email);
+                startActivity(intent);
             }
             else
             {
-                Log.d("Error",s);
+
+
             }
 
         }
@@ -281,8 +290,9 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
         }
         else
         {
-            Type = "Расход";
+
             Expenditure();
+            Type = "Расход";
         }
 
     }

@@ -92,26 +92,33 @@ public class Main extends Activity {
         protected void onPostExecute(String s) {
             String err=null;
 
-            try {
 
-                JSONObject root = new JSONObject(s);
-                //Получаем JSON объект
-                JSONObject user_data = root.getJSONObject("users");
-                NAME = user_data.getString("Name");
-                PASSWORD = user_data.getString("Password");
-                EMAIL = user_data.getString("Email");
-            } catch (JSONException e) {
-                e.printStackTrace();
-                err = "Exception: "+e.getMessage();
+                try {
+
+                    JSONObject root = new JSONObject(s);
+                    //Получаем JSON объект
+                    JSONObject user_data = root.getJSONObject("users");
+                    NAME = user_data.getString("Name");
+                    PASSWORD = user_data.getString("Password");
+                    EMAIL = user_data.getString("Email");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    err = "Exception: "+e.getMessage();
+                }
+                if(NAME==null || PASSWORD==null || EMAIL==null) {
+                    err = "Ошибка авторизации.";
+                    Toast.makeText(getApplicationContext(),err,Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent i = new Intent(ctx, Home.class);
+                    i.putExtra("Name", NAME);
+                    i.putExtra("Password", PASSWORD);
+                    i.putExtra("Email", EMAIL);
+                    i.putExtra("err", err);
+                    startActivity(i);
+                }
+
             }
 
-            Intent i = new Intent(ctx, Home.class);
-            i.putExtra("Name", NAME);
-            i.putExtra("Password", PASSWORD);
-            i.putExtra("Email", EMAIL);
-            i.putExtra("err", err);
-            startActivity(i);
-
-        }
     }
 }

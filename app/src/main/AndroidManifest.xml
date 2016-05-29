@@ -17,9 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"></activity>
-        <activity android:name=".Home"></activity>
-        <activity android:name=".Billing"></activity>
+        <activity android:name=".Register" />
+        <activity android:name=".Home" />
+        <activity android:name=".Billing" />
+        <activity android:name=".Bills"></activity>
     </application>
 
 </manifest>

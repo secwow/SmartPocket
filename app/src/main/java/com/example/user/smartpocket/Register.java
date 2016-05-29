@@ -6,10 +6,13 @@ package com.example.user.smartpocket;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.EditText;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,11 +20,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Register extends Activity {
 
     EditText name, password, email;
-    String Name, Password, Email;
+    TextView error;
+    String Name, Password, Email, Error;
     Context ctx=this;
 
     @Override
@@ -31,14 +37,68 @@ public class Register extends Activity {
         name = (EditText) findViewById(R.id.register_name);
         password = (EditText) findViewById(R.id.register_password);
         email = (EditText) findViewById(R.id.register_email);
+        error = (TextView)findViewById(R.id.errorMessage);
     }
 
+    public  void checkLogin(String userNameString){
+
+        Pattern p = Pattern.compile("^[A-Za-z]([.A-Za-z0-9-]{1,18})([A-Za-z0-9])$");
+        Matcher m = p.matcher(userNameString);
+        if(m.matches())
+        {
+            Name = name.getText().toString();
+            name.setBackgroundResource(R.drawable.succesedittextbox);
+        }
+        else
+        {
+            name.setBackgroundResource(R.drawable.erroredittextbox);
+            error.setText("Логин должен состоять только из латинских букв.");
+        }
+    }
+
+
+    public void checkEmail(String userEmail)
+    {
+        Pattern p = Pattern.compile("[a-zA-Z]{1}[a-zA-Z\\d\\u002E\\u005F]+@([a-zA-Z]+\\u002E){1,2}((net)|(com)|(org)|(ru))");
+        Matcher m = p.matcher(userEmail);
+        if(m.matches())
+        {
+           Email = email.getText().toString();
+            email.setBackgroundResource(R.drawable.succesedittextbox);
+        }
+        else
+        {
+            email.setBackgroundResource(R.drawable.erroredittextbox);
+            error.setText("Email должен состоять из шаблона логин@почта");
+        }
+    }
+    public void checkPassword(String userPassword)
+    {
+        if(password.getText().toString().length()>=6)
+        {
+            Password = password.getText().toString();
+            password.setBackgroundResource(R.drawable.succesedittextbox);
+        }
+        else
+        {
+            password.setBackgroundResource(R.drawable.erroredittextbox);
+            error.setText("Пароль не может быть короче 6 символов");
+        }
+    }
     public void register_register(View v){
-        Name = name.getText().toString();
-        Password = password.getText().toString();
-        Email = email.getText().toString();
-        BackGround b = new BackGround();
-        b.execute(Name, Password, Email);
+        checkPassword(password.getText().toString());
+        checkLogin(name.getText().toString());
+        checkEmail(email.getText().toString());
+
+
+        if(Name!=null && Email !=null && Password!=null)
+        {
+            BackGround b = new BackGround();
+            b.execute(Name,Password,Email);
+        }
+
+
+
     }
 
     class BackGround extends AsyncTask<String, String, String>{
@@ -89,8 +149,12 @@ public class Register extends Activity {
         @Override
         protected void onPostExecute(String s) {
             if(s.equals("")){
-                s="Registration is succecful";
+                s="Регистрация успешно завершена";
+                error.setText(s);
+                error.setTextColor(Color.GREEN);
                 Toast.makeText(ctx, s, Toast.LENGTH_LONG).show();
+                Intent i = new Intent(ctx, Main.class);
+                startActivity(i);
             }
 
         }
