@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Register"
+        android:textColor="FFE4E46F"
+        android:padding ="16dp"
         android:id="@+id/textview"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

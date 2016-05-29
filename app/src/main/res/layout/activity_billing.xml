@@ -79,11 +79,14 @@ android:layout_alignParentTop="true"
             android:id="@+id/type"
             android:textOff="Расход"
             android:textOn="Доход"
+            android:textColor="#4e4b4b"
+            android:textSize="20sp"
             android:enabled="true"
+            android:background="@drawable/switcheshape"
             android:layout_below="@+id/sum"
             android:layout_column="2"
             android:layout_alignStart="@+id/date"
-            android:layout_marginStart="70dp" />
+             />
 
 
 
