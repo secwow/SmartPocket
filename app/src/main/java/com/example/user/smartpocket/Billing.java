@@ -219,6 +219,7 @@ public class Billing extends Activity implements CompoundButton.OnCheckedChangeL
 
     }
 
+
     class BackGround extends AsyncTask<String, String, String> {
 
         @Override

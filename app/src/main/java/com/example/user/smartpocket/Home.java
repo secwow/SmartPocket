@@ -85,7 +85,11 @@ public class Home extends Activity {
         };
 
     }
-
+    public void exit(View v)
+    {
+        Intent intent = new Intent(this, Main.class);
+        startActivity(intent);
+    }
 
 
 
